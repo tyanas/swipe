@@ -87,9 +87,6 @@ var leftLayerId = 'osm.mapnik',
             if (layerId.search('google') === 0) {
                 lClasses.remove('leaflet-top');
                 lClasses.remove('leaflet-left');
-                //l.getContainer().className = l.getContainer().className
-                //    .replace(/\bleaflet-top\b/,'')
-                //    .replace(/\bleaflet-left\b/,'');
             }
 
             // cache layers
@@ -101,12 +98,6 @@ var leftLayerId = 'osm.mapnik',
 
     left = updateLayer(layerids[0]);
     right = updateLayer(layerids[1]);
-
-    // Remove classes Google.js adds.
-    //left.getContainer().className =
-    //    left.getContainer().className.replace(/\bleaflet-top\b/,'').replace(/\bleaflet-left\b/,'');
-    //right.getContainer().className =
-    //    right.getContainer().className.replace(/\bleaflet-top\b/,'').replace(/\bleaflet-left\b/,'');
 
     // Clip as you move map or range slider.
     var range = document.getElementById('range'),
@@ -132,8 +123,6 @@ var leftLayerId = 'osm.mapnik',
 
     // select layer type dynamically
     function onLayerTypeChange() {
-        //left.getContainer().remove(); // destroy event listeners?
-        //left.getContainer().style.clip = 'rect(0,0,0,0)';
         left.getContainer().style.display = 'none';
         left = updateLayer(leftTypeSel.value);
         left.getContainer().style.display = 'block';
