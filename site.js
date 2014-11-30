@@ -9,10 +9,34 @@ L.Google.prototype.getContainer = function() {
     return this._container;
 };
 
+// set up defaults
+var leftLayer = 'osm',
+    rightLayer = 'bing';
+
 (function() {
-    var layerids = (location.search.split('?')[1] || '')
-        .split('/')[0]
-        .split('&');
+    function getLayerIds() {
+        var defaultLayers = [leftLayer, rightLayer],
+            searchStr,
+            layers;
+
+        if (_.isUndefined(document.location.search)) {
+            return defaultLayers;
+        }
+
+        searchStr = document.location.search.split('?')[1];
+        if (_.isUndefined(searchStr)) {
+            return defaultLayers;
+        }
+
+        layers = searchStr
+            .split('/')[0]
+            .split('&');
+        if (layers.length < 2) {
+            return defaultLayers;
+        }
+        return layers;
+    }
+    var layerids = getLayerIds();
     var createLayer = function(layerid) {
         var split = layerid.split('.');
         switch(split[0]) {
