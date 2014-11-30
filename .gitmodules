@@ -1,3 +1,3 @@
 [submodule "lib/leaflet-osm"]
 	path = lib/leaflet-osm
-	url = git@github.com:jfirebaugh/leaflet-osm.git
+	url = https://github.com/jfirebaugh/leaflet-osm.git
