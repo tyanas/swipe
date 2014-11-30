@@ -9,29 +9,39 @@ L.Google.prototype.getContainer = function() {
     return this._container;
 };
 
-// set up defaults
-var leftLayerId = 'osm.mapnik',
-    rightLayerId = 'bing.Aerial',
-    osmTypes = {
-        mapnik: L.OSM.Mapnik,
-        cycle: L.OSM.CycleMap,
-        transport: L.OSM.TransportMap,
-        mapquest: L.OSM.MapQuestOpen,
-        hot: L.OSM.HOT
-    },
-    readyLayers = {},
-    leftLayer,
-    rightLayer;
-
 (function() {
+
+    // set up defaults
+    var osmTypes = {
+            mapnik: L.OSM.Mapnik,
+            cycle: L.OSM.CycleMap,
+            transport: L.OSM.TransportMap,
+            mapquest: L.OSM.MapQuestOpen,
+            hot: L.OSM.HOT
+        },
+        defaultLayers = ['osm.mapnik', 'bing.Aerial'],
+        readyLayers = {},
+        map = L.mapbox.map('map', null, {
+            center: [0, 0],
+            zoom: 3
+        }),
+        hash = L.hash(map),
+        range = document.getElementById('range'),
+        leftTypeSel = document.getElementById('leftType'),
+        left,
+        right,
+        layerIds,
+        leftLayer,
+        rightLayer;
+
     if(_.isUndefined(BingAPIKey)) {
         // for *.github.io
         // use this one https://github.com/lxbarth/swipe/blob/gh-pages/site.js#L20
         BingAPIKey = 'AjCTNNlzpfcDOc0G58A4Hzx1N0OGrO8IXpFj1TVqlPG7sUxc8LqXbClnVK9RLk4q';
     }
+
     function getLayerIds() {
-        var defaultLayers = [leftLayerId, rightLayerId],
-            searchStr,
+        var searchStr,
             layers;
 
         if (_.isUndefined(document.location.search)) {
@@ -51,8 +61,8 @@ var leftLayerId = 'osm.mapnik',
         }
         return layers;
     }
-    var layerids = getLayerIds();
-    var createLayer = function(layerid) {
+
+    function createLayer(layerid) {
         var split = layerid.split('.');
         switch(split[0]) {
             case 'bing':
@@ -66,14 +76,7 @@ var leftLayerId = 'osm.mapnik',
             default:
                 return L.mapbox.tileLayer(layerid);
         }
-    };
-    var map = L.mapbox.map('map', null, {
-        center: [0, 0],
-        zoom: 3
-    });
-    var hash = L.hash(map),
-        left,
-        right;
+    }
 
     function updateLayer(layerId) {
         var l = readyLayers[layerId],
@@ -96,37 +99,37 @@ var leftLayerId = 'osm.mapnik',
         return l;
     }
 
-    left = updateLayer(layerids[0]);
-    right = updateLayer(layerids[1]);
-
-    // Clip as you move map or range slider.
-    var range = document.getElementById('range'),
-        leftTypeSel = document.getElementById('leftType');
-
     function clip() {
+        // Clip as you move map or range slider.
         var nw = map.containerPointToLayerPoint([0, 0]),
             se = map.containerPointToLayerPoint(map.getSize()),
             clipX = nw.x + (se.x - nw.x) * range.value;
         left.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
         right.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
     }
+
     function onRangeChange(){
         leftTypeSel.style.right = (1 + (1 - range.value) * 100) + '%';
         clip();
     }
 
-    leftTypeSel.value = layerids[0];
-
-    range['oninput' in range ? 'oninput' : 'onchange'] = onRangeChange;
-    clip();
-    map.on('move', clip);
-
-    // select layer type dynamically
     function onLayerTypeChange() {
+        // select layer type dynamically
         left.getContainer().style.display = 'none';
         left = updateLayer(leftTypeSel.value);
         left.getContainer().style.display = 'block';
         clip();
     }
+
+    layerIds = getLayerIds();
+    left = updateLayer(layerIds[0]);
+    right = updateLayer(layerIds[1]);
+
+    leftTypeSel.value = layerIds[0];
+
+    range['oninput' in range ? 'oninput' : 'onchange'] = onRangeChange;
     leftTypeSel['onchange'] = onLayerTypeChange;
+    map.on('move', clip);
+
+    clip();
 })();
