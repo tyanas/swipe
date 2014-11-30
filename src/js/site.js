@@ -24,6 +24,11 @@ var leftLayerId = 'osm.mapnik',
     rightLayer;
 
 (function() {
+    if(_.isUndefined(BingAPIKey)) {
+        // for *.github.io
+        // use this one https://github.com/lxbarth/swipe/blob/gh-pages/site.js#L20
+        BingAPIKey = 'AjCTNNlzpfcDOc0G58A4Hzx1N0OGrO8IXpFj1TVqlPG7sUxc8LqXbClnVK9RLk4q';
+    }
     function getLayerIds() {
         var defaultLayers = [leftLayerId, rightLayerId],
             searchStr,
