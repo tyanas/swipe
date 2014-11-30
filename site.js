@@ -34,7 +34,7 @@ L.Google.prototype.getContainer = function() {
         zoom: 3
     });
     var hash = L.hash(map);
-    
+ 
     var left = createLayer(layerids[0]).addTo(map);
     var right = createLayer(layerids[1]).addTo(map);
 
@@ -50,7 +50,7 @@ L.Google.prototype.getContainer = function() {
         var nw = map.containerPointToLayerPoint([0, 0]),
             se = map.containerPointToLayerPoint(map.getSize()),
             clipX = nw.x + (se.x - nw.x) * range.value;
-        left.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';    
+        left.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
         right.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
     }
     clip();
