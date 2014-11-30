@@ -17,15 +17,14 @@ http://tyanas.github.io/swipe/?lxbarth.map-x55dflb4&lxbarth.map-uuk1insw#14/40.7
     git clone git@github.com:tyanas/swipe.git
     cd swipe
 
-Create a file with your API keys for maps:
+Run if necessary
 
-    cd src/js
-    cp keys{.template,}.js
+    git update-index --assume-unchanged src/js/keys.js
 
 Get Bing API key here http://msdn.microsoft.com/en-us/library/ff428642.aspx
 and put it in keys.js
 
-run local server. For example
+Run local server. For example:
 
     ~/Development/swipe $ http-server -p 8001
     Starting up http-server, serving ./ on: http://0.0.0.0:8001
