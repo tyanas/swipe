@@ -7,7 +7,15 @@ http://tyanas.github.io/swipe/?lxbarth.map-x55dflb4&lxbarth.map-uuk1insw#14/40.7
 
 ====
 
-## Install
+## Usage
+
+    http://lxbarth.com/swipe/?[mapbox id]&[mapbox map id]
+
+## Get local copy
+
+    cd ~/Development/
+    git clone git@github.com:tyanas/swipe.git
+    cd swipe
 
 Create a file with your API keys for maps:
 
@@ -16,11 +24,13 @@ Create a file with your API keys for maps:
 Get Bing API key here http://msdn.microsoft.com/en-us/library/ff428642.aspx
 and put it in keys.js
 
-## Usage
+run local server. For example
 
-    http://tyanas.github.io/swipe/?[map id]&[map map id]
+    ~/Development/swipe $ http-server -p 8001
+    Starting up http-server, serving ./ on: http://0.0.0.0:8001
+    Hit CTRL-C to stop the server
 
-map id is mapbox map id or other map id
+By default it shows OSM.Mapnik on the left and Bing.Aerial on the right.
 
 ## What's a Mapbox map id?
 
