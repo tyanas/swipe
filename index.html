@@ -14,6 +14,17 @@
     <div id="map"></div>
     <input id="range" type="range" min="0" max="1.0" step="any"/>
 
+    <select name="leftType" id="leftType">
+        <option value="osm">OSM</option>
+        <option value="osm.mapnik">OSM Mapnik</option>
+        <option value="osm.cycle">OSM CycleMap</option>
+        <option value="osm.mapquest">OSM MapQuestOpen</option>
+        <option value="osm.hot">OSM Humanitarian</option>
+        <option value="bing">Bing</option>
+        <!--option value="google">Google</option>
+        <option value="yandex">Yandex</option-->
+    </select>
+
 <script src="http://underscorejs.org/underscore-min.js"></script>
 <script src="https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js"></script>
 <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js"></script>

@@ -10,19 +10,22 @@ L.Google.prototype.getContainer = function() {
 };
 
 // set up defaults
-var leftLayer = 'osm.mapnik',
-    rightLayer = 'bing.Aerial',
+var leftLayerId = 'osm.mapnik',
+    rightLayerId = 'bing.Aerial',
     osmTypes = {
         mapnik: L.OSM.Mapnik,
         cycle: L.OSM.CycleMap,
         transport: L.OSM.TransportMap,
         mapquest: L.OSM.MapQuestOpen,
         hot: L.OSM.HOT
-    };
+    },
+    readyLayers = {},
+    leftLayer,
+    rightLayer;
 
 (function() {
     function getLayerIds() {
-        var defaultLayers = [leftLayer, rightLayer],
+        var defaultLayers = [leftLayerId, rightLayerId],
             searchStr,
             layers;
 
@@ -63,19 +66,47 @@ var leftLayer = 'osm.mapnik',
         center: [0, 0],
         zoom: 3
     });
-    var hash = L.hash(map);
- 
-    var left = createLayer(layerids[0]).addTo(map);
-    var right = createLayer(layerids[1]).addTo(map);
+    var hash = L.hash(map),
+        left,
+        right;
+
+    function updateLayer(layerId) {
+        var l = readyLayers[layerId],
+            lClasses;
+        if (_.isUndefined(l)) {
+            l = createLayer(layerId).addTo(map);
+            lClasses = l.getContainer().classList;
+            lClasses.add(layerId);
+
+            // Remove classes Google.js adds.
+            if (layerId.search('google') === 0) {
+                lClasses.remove('leaflet-top');
+                lClasses.remove('leaflet-left');
+                //l.getContainer().className = l.getContainer().className
+                //    .replace(/\bleaflet-top\b/,'')
+                //    .replace(/\bleaflet-left\b/,'');
+            }
+
+            // cache layers
+            readyLayers[layerId] = l;
+        }
+
+        return l;
+    }
+
+    left = updateLayer(layerids[0]);
+    right = updateLayer(layerids[1]);
 
     // Remove classes Google.js adds.
-    left.getContainer().className =
-        left.getContainer().className.replace(/\bleaflet-top\b/,'').replace(/\bleaflet-left\b/,'');
-    right.getContainer().className =
-        right.getContainer().className.replace(/\bleaflet-top\b/,'').replace(/\bleaflet-left\b/,'');
+    //left.getContainer().className =
+    //    left.getContainer().className.replace(/\bleaflet-top\b/,'').replace(/\bleaflet-left\b/,'');
+    //right.getContainer().className =
+    //    right.getContainer().className.replace(/\bleaflet-top\b/,'').replace(/\bleaflet-left\b/,'');
 
     // Clip as you move map or range slider.
-    var range = document.getElementById('range');
+    var range = document.getElementById('range'),
+        leftTypeSel = document.getElementById('leftType');
+
     function clip() {
         var nw = map.containerPointToLayerPoint([0, 0]),
             se = map.containerPointToLayerPoint(map.getSize()),
@@ -83,7 +114,25 @@ var leftLayer = 'osm.mapnik',
         left.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
         right.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
     }
+    function onRangeChange(){
+        leftTypeSel.style.right = (1 + (1 - range.value) * 100) + '%';
+        clip();
+    }
+
+    leftTypeSel.value = layerids[0];
+
+    range['oninput' in range ? 'oninput' : 'onchange'] = onRangeChange;
     clip();
-    range['oninput' in range ? 'oninput' : 'onchange'] = clip;
     map.on('move', clip);
+
+    // select layer type dynamically
+    function onLayerTypeChange() {
+        //left.getContainer().remove(); // destroy event listeners?
+        //left.getContainer().style.clip = 'rect(0,0,0,0)';
+        left.getContainer().style.display = 'none';
+        left = updateLayer(leftTypeSel.value);
+        left.getContainer().style.display = 'block';
+        clip();
+    }
+    leftTypeSel['onchange'] = onLayerTypeChange;
 })();
