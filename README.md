@@ -40,4 +40,7 @@ You can also compare maps with and among other map providers than Mapbox. Suppor
 - `google.HYBRID` - Google roads + satellite
 - `google.TERRAIN` - Google terrain
 - `bing` - Bing satellite
+- `bing.Aerial` - Bing satellite, see imagerySet here http://msdn.microsoft.com/en-us/library/ff701716.aspx
+- `bing.AerialWithLabels` - Bing satellite + roads (like hybrid)
+- `bing.Road` - Bing roads
 

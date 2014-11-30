@@ -11,7 +11,7 @@ L.Google.prototype.getContainer = function() {
 
 // set up defaults
 var leftLayer = 'osm',
-    rightLayer = 'bing';
+    rightLayer = 'bing.Aerial';
 
 (function() {
     function getLayerIds() {
@@ -41,7 +41,7 @@ var leftLayer = 'osm',
         var split = layerid.split('.');
         switch(split[0]) {
             case 'bing':
-                return new L.BingLayer(BingAPIKey);
+                return new L.BingLayer(BingAPIKey, {type: split[1] || 'Aerial'});
             case 'google':
                 return new L.Google(split[1] || 'ROADMAP');
             case 'yandex':
