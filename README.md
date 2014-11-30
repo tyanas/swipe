@@ -43,4 +43,8 @@ You can also compare maps with and among other map providers than Mapbox. Suppor
 - `bing.Aerial` - Bing satellite, see imagerySet here http://msdn.microsoft.com/en-us/library/ff701716.aspx
 - `bing.AerialWithLabels` - Bing satellite + roads (like hybrid)
 - `bing.Road` - Bing roads
+- `yandex` - Yandex satellite, see https://tech.yandex.ru/maps/doc/jsapi/1.x/ref/reference/maptype-docpage/
+- `yandex.satellite` - Yandex satellite
+- `yandex.map` - Yandex roads
+- `yandex.hybrid` - Yandex satellite + roads
 

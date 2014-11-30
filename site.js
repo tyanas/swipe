@@ -45,7 +45,7 @@ var leftLayer = 'osm',
             case 'google':
                 return new L.Google(split[1] || 'ROADMAP');
             case 'yandex':
-                return new L.Yandex();
+                return new L.Yandex(split[1] || 'satellite');
             case 'osm':
                 map.infoControl.addInfo('<a href="http://openstreetmap.org/copyright">&copy; OpenStreetMap contributors</a>');
                 return new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
