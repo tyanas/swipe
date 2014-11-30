@@ -19,6 +19,7 @@ http://tyanas.github.io/swipe/?lxbarth.map-x55dflb4&lxbarth.map-uuk1insw#14/40.7
 
 Create a file with your API keys for maps:
 
+    cd src/js
     cp keys{.template,}.js
 
 Get Bing API key here http://msdn.microsoft.com/en-us/library/ff428642.aspx
