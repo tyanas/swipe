@@ -51,6 +51,7 @@ You can also compare maps with and among other map providers than Mapbox. Suppor
 - `osm.mapquest` - OpenStreetMap, MapQuestOpen
 - `osm.hot` - OpenStreetMap, Humanitarian OpenStreetMap
 - `google` - Google streets
+- `google.ROADMAP` - Google streets (roads)
 - `google.SATELLITE` - Google satellite
 - `google.HYBRID` - Google roads + satellite
 - `google.TERRAIN` - Google terrain

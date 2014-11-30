@@ -19,6 +19,23 @@ L.Google.prototype.getContainer = function() {
             mapquest: L.OSM.MapQuestOpen,
             hot: L.OSM.HOT
         },
+        layerTypes = {
+            'osm.mapnik': 'OSM Mapnik',
+            'osm.cycle': 'OSM CycleMap',
+            'osm.transport': 'OSM TransportMap',
+            'osm.mapquest': 'OSM MapQuest',
+            'osm.hot': 'OSM Humanitarian',
+            'bing.Road': 'Bing Streets',
+            'bing.Aerial': 'Bing Aerial',
+            'bing.AerialWithLabels': 'Bing Hybrid',
+            'google.ROADMAP': 'Google Streets',
+            'google.SATELLITE': 'Google Satellite',
+            'google.TERRAIN': 'Google Terrain',
+            'google.HYBRID': 'Google Hybrid',
+            'yandex.map': 'Yandex Streets',
+            'yandex.satellite': 'Yandex Satellite',
+            'yandex.hybrid': 'Yandex Hybrid',
+        },
         defaultLayers = ['osm.mapnik', 'bing.Aerial'],
         readyLayers = {},
         map = L.mapbox.map('map', null, {
@@ -28,6 +45,7 @@ L.Google.prototype.getContainer = function() {
         hash = L.hash(map),
         range = document.getElementById('range'),
         leftTypeSel = document.getElementById('leftType'),
+        //rightTypeSel = document.getElementById('rightType'),
         left,
         right,
         layerIds,
@@ -109,7 +127,9 @@ L.Google.prototype.getContainer = function() {
     }
 
     function onRangeChange(){
-        leftTypeSel.style.right = (1 + (1 - range.value) * 100) + '%';
+        var off = (1 + (1 - range.value) * 100) + '%';
+        leftTypeSel.style.right = off;
+        //rightTypeSel.style.right = off;
         clip();
     }
 
@@ -119,6 +139,10 @@ L.Google.prototype.getContainer = function() {
         left = updateLayer(leftTypeSel.value);
         left.getContainer().style.display = 'block';
         clip();
+    }
+
+    function getOptions() {
+        // each layerTypes
     }
 
     layerIds = getLayerIds();
