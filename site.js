@@ -41,7 +41,7 @@ var leftLayer = 'osm',
         var split = layerid.split('.');
         switch(split[0]) {
             case 'bing':
-                return new L.BingLayer('AjCTNNlzpfcDOc0G58A4Hzx1N0OGrO8IXpFj1TVqlPG7sUxc8LqXbClnVK9RLk4q');
+                return new L.BingLayer(BingAPIKey);
             case 'google':
                 return new L.Google(split[1] || 'ROADMAP');
             case 'yandex':

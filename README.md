@@ -3,13 +3,24 @@ Swipe
 
 Compare two Mapbox maps.
 
-http://lxbarth.com/swipe/?lxbarth.map-x55dflb4&lxbarth.map-uuk1insw#14/40.7334/-73.9867
+http://tyanas.github.io/swipe/?lxbarth.map-x55dflb4&lxbarth.map-uuk1insw#14/40.7334/-73.9867
 
 ====
 
+## Install
+
+Create a file with your API keys for maps:
+
+    cp keys{.template,}.js
+
+Get Bing API key here http://msdn.microsoft.com/en-us/library/ff428642.aspx
+and put it in keys.js
+
 ## Usage
 
-    http://lxbarth.com/swipe/?[mapbox id]&[mapbox map id]
+    http://tyanas.github.io/swipe/?[map id]&[map map id]
+
+map id is mapbox map id or other map id
 
 ## What's a Mapbox map id?
 
@@ -29,3 +40,4 @@ You can also compare maps with and among other map providers than Mapbox. Suppor
 - `google.HYBRID` - Google roads + satellite
 - `google.TERRAIN` - Google terrain
 - `bing` - Bing satellite
+
