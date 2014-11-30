@@ -10,8 +10,15 @@ L.Google.prototype.getContainer = function() {
 };
 
 // set up defaults
-var leftLayer = 'osm',
-    rightLayer = 'bing.Aerial';
+var leftLayer = 'osm.mapnik',
+    rightLayer = 'bing.Aerial',
+    osmTypes = {
+        mapnik: L.OSM.Mapnik,
+        cycle: L.OSM.CycleMap,
+        transport: L.OSM.TransportMap,
+        mapquest: L.OSM.MapQuestOpen,
+        hot: L.OSM.HOT
+    };
 
 (function() {
     function getLayerIds() {
@@ -47,8 +54,7 @@ var leftLayer = 'osm',
             case 'yandex':
                 return new L.Yandex(split[1] || 'satellite');
             case 'osm':
-                map.infoControl.addInfo('<a href="http://openstreetmap.org/copyright">&copy; OpenStreetMap contributors</a>');
-                return new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                return new osmTypes[split[1] || 'mapnik']();
             default:
                 return L.mapbox.tileLayer(layerid);
         }

@@ -34,7 +34,12 @@ https://www.mapbox.com/developers/api-overview/
 
 You can also compare maps with and among other map providers than Mapbox. Supported identifiers:
 
-- `osm` - OpenStreetMap
+- `osm` - OpenStreetMap, Mapnik
+- `osm.mapnik` - OpenStreetMap, Mapnik
+- `osm.cycle` - OpenStreetMap, CycleMap
+- `osm.transport` - OpenStreetMap, TransportMap
+- `osm.mapquest` - OpenStreetMap, MapQuestOpen
+- `osm.hot` - OpenStreetMap, Humanitarian OpenStreetMap
 - `google` - Google streets
 - `google.SATELLITE` - Google satellite
 - `google.HYBRID` - Google roads + satellite
