@@ -38,6 +38,7 @@ L.Google.prototype.getContainer = function() {
         },
         defaultLayers = ['osm.mapnik', 'bing.Aerial'],
         readyLayers = {},
+        mapContainer = document.getElementById('map'),
         map = L.mapbox.map('map', null, {
             center: [0, 0],
             zoom: 3
@@ -46,8 +47,7 @@ L.Google.prototype.getContainer = function() {
         range = document.getElementById('range'),
         leftTypeSel = document.getElementById('leftType'),
         //rightTypeSel = document.getElementById('rightType'),
-        left,
-        right,
+        sides = {leftType: null, rightType: null},
         layerIds,
         leftLayer,
         rightLayer;
@@ -101,6 +101,7 @@ L.Google.prototype.getContainer = function() {
             lClasses;
         if (_.isUndefined(l)) {
             l = createLayer(layerId).addTo(map);
+            // TODO fix info/attribution
             lClasses = l.getContainer().classList;
             lClasses.add(layerId);
 
@@ -122,37 +123,55 @@ L.Google.prototype.getContainer = function() {
         var nw = map.containerPointToLayerPoint([0, 0]),
             se = map.containerPointToLayerPoint(map.getSize()),
             clipX = nw.x + (se.x - nw.x) * range.value;
-        left.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
-        right.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
+        sides.leftType.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
+        sides.rightType.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
     }
 
     function onRangeChange(){
-        var off = (1 + (1 - range.value) * 100) + '%';
-        leftTypeSel.style.right = off;
-        //rightTypeSel.style.right = off;
+        leftTypeSel.style.right = (1 + (1 - range.value) * 100) + '%';
+        rightTypeSel.style.left = (1 + range.value * 100) + '%';
         clip();
     }
 
-    function onLayerTypeChange() {
+    function onLayerTypeChange(event) {
+        var sideTypeSel = event.target,
+            prevLayer = sides[sideTypeSel.id].getContainer();
         // select layer type dynamically
-        left.getContainer().style.display = 'none';
-        left = updateLayer(leftTypeSel.value);
-        left.getContainer().style.display = 'block';
+        //side.getContainer().style.display = 'none';
+        sides[sideTypeSel.id] = updateLayer(sideTypeSel.value);
+        sides[sideTypeSel.id].getContainer().style.display = 'block';
+        prevLayer.style.display = 'none';
         clip();
     }
 
-    function getOptions() {
-        // each layerTypes
+    function getTypeSelect(sId) {
+        var s = document.createElement('select'),
+            o;
+        _.each(layerTypes, function (v, k) {
+            o = document.createElement('option');
+            o.value = k;
+            o.text = v;
+            s.appendChild(o);
+        });
+        s.id = sId;
+        return s;
     }
 
     layerIds = getLayerIds();
-    left = updateLayer(layerIds[0]);
-    right = updateLayer(layerIds[1]);
+    sides.leftType = updateLayer(layerIds[0]);
+    sides.rightType = updateLayer(layerIds[1]);
 
+    leftTypeSel = getTypeSelect('leftType');
     leftTypeSel.value = layerIds[0];
+    mapContainer.appendChild(leftTypeSel);
+
+    rightTypeSel = getTypeSelect('rightType');
+    rightTypeSel.value = layerIds[1];
+    mapContainer.appendChild(rightTypeSel);
 
     range['oninput' in range ? 'oninput' : 'onchange'] = onRangeChange;
     leftTypeSel['onchange'] = onLayerTypeChange;
+    rightTypeSel['onchange'] = onLayerTypeChange;
     map.on('move', clip);
 
     clip();
